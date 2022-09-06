@@ -832,7 +832,15 @@ class SerializerForBlock<TraitType::Enum, T>
         ~SerializerForBlock()   {}
         void printMembers()
         {
-            printer.addValue(Traits<T>::getValues().find(object)->second);
+            auto values = Traits<T>::getValues();
+            auto valueIt = values.find(object);
+            if (valueIt == values.end())
+            {
+                ThorsLogAndThrow("ThorsAnvil::Serialize::SerializerForBlock<Enum>",
+                                 "SerializerForBlock",
+                                 "Invalid Enum Value");
+            }
+            printer.addValue(valueIt->second);
         }
 };
 
